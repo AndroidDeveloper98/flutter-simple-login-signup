@@ -52,6 +52,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               child: TextFormField(
+                textInputAction: TextInputAction.next,
                 controller: widget.textEditingController,
                 obscureText: (widget.obscureText && _obscureText),
                 decoration: InputDecoration(

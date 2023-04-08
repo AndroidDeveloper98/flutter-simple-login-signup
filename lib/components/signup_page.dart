@@ -61,8 +61,8 @@ class _SignupPageState extends State<SignupPage> {
                           child: Stack(
                             children: [
                               Positioned(
-                                bottom: 5,
-                                right: 5,
+                                bottom: 0,
+                                right: 0,
                                 child: GestureDetector(
                                   onTap: _pickProfileImage,
                                   child: Container(

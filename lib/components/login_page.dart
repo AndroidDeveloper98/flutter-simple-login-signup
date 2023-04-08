@@ -16,7 +16,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   //
   final _loginFormKey = GlobalKey<FormState>();
-  TextEditingController textEditingController = TextEditingController();
+  TextEditingController textEmailController = TextEditingController();
+  TextEditingController textPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                           title: 'Log-in',
                         ),
                         CustomInputField(
-                            textEditingController: textEditingController,
+                            textEditingController: textEmailController,
                             labelText: 'Email',
                             hintText: 'Your email id',
                             isDense: true,
@@ -61,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 16,
                         ),
                         CustomInputField(
+                          textEditingController: textPasswordController,
                           labelText: 'Password',
                           hintText: 'Your password',
                           obscureText: true,
@@ -157,18 +159,24 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    textEditingController.dispose();
+    textEmailController.dispose();
+    textPasswordController.dispose();
   }
 
   void _handleLoginUser() {
-    String data = textEditingController.text.toString();
-    if (data.isEmpty) {
+    String emailAddress = textEmailController.text.toString();
+    String password = textPasswordController.text.toString();
+    if (emailAddress.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Enter email address')),
       );
-    } else if (!EmailValidator.validate(data)) {
+    } else if (!EmailValidator.validate(emailAddress)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Enter valid email address')),
+      );
+    } else if (password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter password')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
