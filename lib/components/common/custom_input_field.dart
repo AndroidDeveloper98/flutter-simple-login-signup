@@ -7,6 +7,7 @@ class CustomInputField extends StatefulWidget {
   final bool suffixIcon;
   final bool? isDense;
   final bool obscureText;
+  final TextInputAction? textInputAction;
   final TextEditingController? textEditingController;
 
   const CustomInputField(
@@ -17,6 +18,7 @@ class CustomInputField extends StatefulWidget {
       this.suffixIcon = false,
       this.isDense,
       this.textEditingController,
+      this.textInputAction,
       this.obscureText = false})
       : super(key: key);
 
@@ -52,7 +54,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               child: TextFormField(
-                textInputAction: TextInputAction.next,
+                textInputAction: (widget.textInputAction!= null) ? widget.textInputAction : TextInputAction.next,
                 controller: widget.textEditingController,
                 obscureText: (widget.obscureText && _obscureText),
                 decoration: InputDecoration(

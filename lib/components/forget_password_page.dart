@@ -42,6 +42,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                         CustomInputField(
                             labelText: 'Email',
                             hintText: 'Your email id',
+                            textInputAction: TextInputAction.done,
                             isDense: true,
                             validator: (textValue) {
                               if (textValue == null || textValue.isEmpty) {

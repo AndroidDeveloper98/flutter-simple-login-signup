@@ -65,6 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                           textEditingController: textPasswordController,
                           labelText: 'Password',
                           hintText: 'Your password',
+                          textInputAction: TextInputAction.done,
                           obscureText: true,
                           isDense: true,
                           suffixIcon: true,

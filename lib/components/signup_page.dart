@@ -141,6 +141,7 @@ class _SignupPageState extends State<SignupPage> {
                       CustomInputField(
                         labelText: 'Password',
                         hintText: 'Your password',
+                        textInputAction: TextInputAction.done,
                         isDense: true,
                         obscureText: true,
                         validator: (textValue) {
