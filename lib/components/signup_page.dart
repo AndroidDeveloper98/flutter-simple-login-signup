@@ -39,16 +39,14 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xffEEF1F3),
         body: SingleChildScrollView(
           child: Form(
             key: _signupFormKey,
             child: Column(
               children: [
-                const PageHeader(),
+                //const PageHeader(),
                 Container(
                   decoration: const BoxDecoration(
-                    color: Colors.white,
                     borderRadius: BorderRadius.vertical(top: Radius.circular(20),),
                   ),
                   child: Column(
@@ -95,6 +93,9 @@ class _SignupPageState extends State<SignupPage> {
                           validator: (textValue) {
                             if(textValue == null || textValue.isEmpty) {
                               return 'Name field is required!';
+                            }
+                            if(textValue.length<5){
+                              return "Enter valid Name";
                             }
                             return null;
                           }

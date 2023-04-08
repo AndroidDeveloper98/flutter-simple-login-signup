@@ -13,6 +13,14 @@ class CustomFormButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xff233743),
         borderRadius: BorderRadius.circular(26),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xff233743).withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 8,
+            offset: const Offset(0, 8), // changes position of shadow
+          ),
+        ],
       ),
       child: TextButton(
         onPressed: onPressed,
