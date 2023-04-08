@@ -16,6 +16,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   //
   final _loginFormKey = GlobalKey<FormState>();
+  TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                           title: 'Log-in',
                         ),
                         CustomInputField(
+                            textEditingController: textEditingController,
                             labelText: 'Email',
                             hintText: 'Your email id',
                             isDense: true,
@@ -151,9 +153,24 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    textEditingController.dispose();
+  }
+
   void _handleLoginUser() {
-    // login user
-    if (_loginFormKey.currentState!.validate()) {
+    String data = textEditingController.text.toString();
+    if (data.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter email address')),
+      );
+    } else if (!EmailValidator.validate(data)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter valid email address')),
+      );
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Submitting data..')),
       );

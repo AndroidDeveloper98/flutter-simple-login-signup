@@ -7,6 +7,7 @@ class CustomInputField extends StatefulWidget {
   final bool suffixIcon;
   final bool? isDense;
   final bool obscureText;
+  final TextEditingController? textEditingController;
 
   const CustomInputField(
       {Key? key,
@@ -15,6 +16,7 @@ class CustomInputField extends StatefulWidget {
       required this.validator,
       this.suffixIcon = false,
       this.isDense,
+      this.textEditingController,
       this.obscureText = false})
       : super(key: key);
 
@@ -43,12 +45,14 @@ class _CustomInputFieldState extends State<CustomInputField> {
           ),
           Card(
             margin: const EdgeInsets.only(top: 8),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             elevation: 5,
             color: Colors.white,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               child: TextFormField(
+                controller: widget.textEditingController,
                 obscureText: (widget.obscureText && _obscureText),
                 decoration: InputDecoration(
                   isDense: (widget.isDense != null) ? widget.isDense : false,
