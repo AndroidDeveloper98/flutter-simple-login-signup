@@ -4,6 +4,7 @@ import 'package:login_signup/components/common/custom_form_button.dart';
 import 'package:login_signup/components/common/custom_input_field.dart';
 import 'package:login_signup/components/common/page_heading.dart';
 import 'package:login_signup/components/forget_password_page.dart';
+import 'package:login_signup/components/home_screen.dart';
 import 'package:login_signup/components/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -167,7 +168,14 @@ class _LoginPageState extends State<LoginPage> {
   void _handleLoginUser() {
     String emailAddress = textEmailController.text.toString();
     String password = textPasswordController.text.toString();
-    if (emailAddress.isEmpty) {
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+            const HomeScreen()));
+
+    /*if (emailAddress.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Enter email address')),
       );
@@ -180,9 +188,11 @@ class _LoginPageState extends State<LoginPage> {
         const SnackBar(content: Text('Enter password')),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Submitting data..')),
-      );
-    }
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+              const HomeScreen()));
+    }*/
   }
 }
