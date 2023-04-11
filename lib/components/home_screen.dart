@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              logOut();
+              logoutDialog(context);
             },
             icon: Icon(Icons.exit_to_app),
           ),
@@ -161,6 +161,29 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.pop(context);
             },
             child: const Text('Close'),
+          )
+        ],
+      ),
+    );
+  }
+
+  void logoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: const Text('Are you sure to logout ?'),
+        actions: <TextButton>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Close'),
+          ),
+          TextButton(
+            onPressed: () {
+              logOut();
+            },
+            child: const Text('Logout'),
           )
         ],
       ),

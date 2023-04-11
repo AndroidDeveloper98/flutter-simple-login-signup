@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:login_signup/components/common/custom_form_button.dart';
 import 'package:login_signup/components/common/custom_input_field.dart';
 import 'package:login_signup/components/common/page_heading.dart';
-import 'package:login_signup/components/forget_password_page.dart';
 import 'package:login_signup/components/home_screen.dart';
 import 'package:login_signup/components/signup_page.dart';
 
@@ -42,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     } else {
       try {
+        showLoaderDialog(context);
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         if (userCredential.user != null) {
@@ -51,8 +51,32 @@ class _LoginPageState extends State<LoginPage> {
         }
       } on FirebaseAuthException catch (ex) {
         log(ex.code.toString());
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(ex.message.toString()),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
+  }
+
+  showLoaderDialog(BuildContext context) {
+    AlertDialog alert = const AlertDialog(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    content: Center(
+      child: CircularProgressIndicator(),
+    ),
+  );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -60,124 +84,131 @@ class _LoginPageState extends State<LoginPage> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xffEEF1F3),
+        backgroundColor: Colors.white,
         body: Column(
           children: [
             //const PageHeader(),
             Expanded(
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20),
+              child: Center(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
                   ),
-                ),
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: _loginFormKey,
-                    child: Column(
-                      children: [
-                        const PageHeading(
-                          title: 'Log-in',
-                        ),
-                        CustomInputField(
-                            textEditingController: emailController,
-                            labelText: 'Email',
-                            hintText: 'Enter email address',
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _loginFormKey,
+                      child: Column(
+                        children: [
+                          const PageHeading(
+                            title: 'Log-in',
+                          ),
+                          CustomInputField(
+                              textEditingController: emailController,
+                              labelText: 'Email',
+                              hintText: 'Enter email address',
+                              isDense: true,
+                              validator: (textValue) {
+                                if (textValue == null || textValue.isEmpty) {
+                                  return 'Email is required!';
+                                }
+                                if (!EmailValidator.validate(textValue)) {
+                                  return 'Please enter a valid email';
+                                }
+                                return null;
+                              }),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          CustomInputField(
+                            textEditingController: passwordController,
+                            labelText: 'Password',
+                            hintText: 'Enter password',
+                            textInputAction: TextInputAction.done,
+                            obscureText: true,
                             isDense: true,
+                            suffixIcon: true,
                             validator: (textValue) {
                               if (textValue == null || textValue.isEmpty) {
-                                return 'Email is required!';
-                              }
-                              if (!EmailValidator.validate(textValue)) {
-                                return 'Please enter a valid email';
+                                return 'Password is required!';
                               }
                               return null;
-                            }),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        CustomInputField(
-                          textEditingController: passwordController,
-                          labelText: 'Password',
-                          hintText: 'Enter password',
-                          textInputAction: TextInputAction.done,
-                          obscureText: true,
-                          isDense: true,
-                          suffixIcon: true,
-                          validator: (textValue) {
-                            if (textValue == null || textValue.isEmpty) {
-                              return 'Password is required!';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Container(
-                          width: size.width * 0.80,
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                            onTap: () => {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ForgetPasswordPage()))
                             },
-                            child: const Text(
-                              'Forget password?',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CustomFormButton(
-                          innerText: 'Login',
-                          onPressed: login,
-                        ),
-                        const SizedBox(
-                          height: 18,
-                        ),
-                        SizedBox(
-                          width: size.width * 0.8,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                'Don\'t have an account ? ',
+                          /*const SizedBox(
+                            height: 16,
+                          ),*/
+                          /*Container(
+                            width: size.width * 0.80,
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                              onTap: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ForgetPasswordPage()))
+                              },
+                              child: const Text(
+                                'Forget password?',
                                 style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              GestureDetector(
-                                onTap: () => {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SignupPage()))
-                                },
-                                child: const Text(
-                                  'Sign-up',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Color(0xff26E698),
-                                      fontWeight: FontWeight.bold),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ],
+                            ),
+                          ),*/
+                          const SizedBox(
+                            height: 20,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                      ],
+                          CustomFormButton(
+                            innerText: 'Login',
+                            onPressed: login,
+                          ),
+                          const SizedBox(
+                            height: 18,
+                          ),
+                          SizedBox(
+                            width: size.width * 0.8,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Don\'t have an account ? ',
+                                  style: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                GestureDetector(
+                                  onTap: () => {
+                                    /*Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignupPage()))*/
+
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) => SignupPage()))
+                                  },
+                                  child: const Text(
+                                    'Sign-up',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Color(0xff26E698),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
