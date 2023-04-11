@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:login_signup/components/login_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -29,6 +31,14 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: 50);
   }
 
+  void logOut() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.popUntil(context, (route) => route.isFirst);
+    Navigator.pushReplacement(context, CupertinoPageRoute(
+        builder: (context) => LoginPage()
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +46,14 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Dashboard'),
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.blue),
+        actions: [
+          IconButton(
+            onPressed: () {
+              logOut();
+            },
+            icon: Icon(Icons.exit_to_app),
+          ),
+        ],
       ),
       body: const Center(child: Text("Home Page")),
       bottomNavigationBar: BottomNavigationBar(
@@ -77,9 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: Drawer(
         child: ListView(
           children: [
-            const UserAccountsDrawerHeader(
+             UserAccountsDrawerHeader(
               accountName: Text('User Name'),
-              accountEmail: Text('usar@gmail.com'),
+              accountEmail: Text('${FirebaseAuth.instance.currentUser?.email.toString()}'),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: AssetImage('assets/images/friendship.png'),
               ),

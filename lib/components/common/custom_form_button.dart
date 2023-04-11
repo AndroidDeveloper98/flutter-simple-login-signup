@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomFormButton extends StatelessWidget {
@@ -9,21 +10,21 @@ class CustomFormButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      width: size.width * 0.8,
+      width: size.width * 0.85,
       margin: const EdgeInsets.symmetric(horizontal: 0,vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xff233743),
-        borderRadius: BorderRadius.circular(26),
+        color: const Color(0xff26E698),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xff233743).withOpacity(0.3),
+            color: const Color(0xff26E698).withOpacity(0.3),
             spreadRadius: 2,
             blurRadius: 8,
             offset: const Offset(0, 8), // changes position of shadow
           ),
         ],
       ),
-      child: TextButton(
+      child: CupertinoButton(
         onPressed: onPressed,
         child: Text(innerText, style: const TextStyle(color: Colors.white, fontSize: 20),),
       ),

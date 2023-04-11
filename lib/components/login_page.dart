@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup/components/common/custom_form_button.dart';
 import 'package:login_signup/components/common/custom_input_field.dart';
@@ -17,8 +21,39 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   //
   final _loginFormKey = GlobalKey<FormState>();
-  TextEditingController textEmailController = TextEditingController();
-  TextEditingController textPasswordController = TextEditingController();
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  void login() async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter email address')),
+      );
+    } else if (!EmailValidator.validate(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter valid email address')),
+      );
+    } else if (password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter password')),
+      );
+    } else {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+        if (userCredential.user != null) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+          Navigator.pushReplacement(
+              context, CupertinoPageRoute(builder: (context) => HomeScreen()));
+        }
+      } on FirebaseAuthException catch (ex) {
+        log(ex.code.toString());
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +81,9 @@ class _LoginPageState extends State<LoginPage> {
                           title: 'Log-in',
                         ),
                         CustomInputField(
-                            textEditingController: textEmailController,
+                            textEditingController: emailController,
                             labelText: 'Email',
-                            hintText: 'Your email id',
+                            hintText: 'Enter email address',
                             isDense: true,
                             validator: (textValue) {
                               if (textValue == null || textValue.isEmpty) {
@@ -63,9 +98,9 @@ class _LoginPageState extends State<LoginPage> {
                           height: 16,
                         ),
                         CustomInputField(
-                          textEditingController: textPasswordController,
+                          textEditingController: passwordController,
                           labelText: 'Password',
-                          hintText: 'Your password',
+                          hintText: 'Enter password',
                           textInputAction: TextInputAction.done,
                           obscureText: true,
                           isDense: true,
@@ -94,8 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: const Text(
                               'Forget password?',
                               style: TextStyle(
-                                color: Color(0xff939393),
-                                fontSize: 13,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -106,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         CustomFormButton(
                           innerText: 'Login',
-                          onPressed: _handleLoginUser,
+                          onPressed: login,
                         ),
                         const SizedBox(
                           height: 18,
@@ -119,9 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                               const Text(
                                 'Don\'t have an account ? ',
                                 style: TextStyle(
-                                    fontSize: 13,
-                                    color: Color(0xff939393),
-                                    fontWeight: FontWeight.bold),
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               GestureDetector(
                                 onTap: () => {
@@ -134,8 +166,8 @@ class _LoginPageState extends State<LoginPage> {
                                 child: const Text(
                                   'Sign-up',
                                   style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color(0xff748288),
+                                      fontSize: 16,
+                                      color: Color(0xff26E698),
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -161,38 +193,7 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    textEmailController.dispose();
-    textPasswordController.dispose();
-  }
-
-  void _handleLoginUser() {
-    String emailAddress = textEmailController.text.toString();
-    String password = textPasswordController.text.toString();
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-            const HomeScreen()));
-
-    /*if (emailAddress.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter email address')),
-      );
-    } else if (!EmailValidator.validate(emailAddress)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter valid email address')),
-      );
-    } else if (password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter password')),
-      );
-    } else {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-              const HomeScreen()));
-    }*/
+    emailController.dispose();
+    passwordController.dispose();
   }
 }

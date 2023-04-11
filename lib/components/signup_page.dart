@@ -1,9 +1,8 @@
-import 'dart:io';
+import 'dart:developer';
 
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:login_signup/components/common/custom_form_button.dart';
 import 'package:login_signup/components/common/custom_input_field.dart';
 import 'package:login_signup/components/common/page_heading.dart';
@@ -17,19 +16,52 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  File? _profileImage;
-
   final _signupFormKey = GlobalKey<FormState>();
 
-  Future _pickProfileImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController cPasswordController = TextEditingController();
 
-      final imageTemporary = File(image.path);
-      setState(() => _profileImage = imageTemporary);
-    } on PlatformException catch (e) {
-      debugPrint('Failed to pick image error: $e');
+  void createAccount() async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+    String cPassword = cPasswordController.text.trim();
+
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter email address')),
+      );
+    } else if (!EmailValidator.validate(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter valid email address')),
+      );
+    } else if (password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter password')),
+      );
+    } else if (password.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password is too short')),
+      );
+    } else if (cPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter confirm password')),
+      );
+    } else if (password != cPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Password and confirm password not matched!')),
+      );
+    } else {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
+        if (userCredential.user != null) {
+          Navigator.pop(context);
+        }
+      } on FirebaseAuthException catch (ex) {
+        log(ex.code.toString());
+      }
     }
   }
 
@@ -54,64 +86,13 @@ class _SignupPageState extends State<SignupPage> {
                       const PageHeading(
                         title: 'Sign-up',
                       ),
-                      SizedBox(
-                        width: 130,
-                        height: 130,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey.shade200,
-                          backgroundImage: _profileImage != null
-                              ? FileImage(_profileImage!)
-                              : null,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: GestureDetector(
-                                  onTap: _pickProfileImage,
-                                  child: Container(
-                                    height: 50,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue.shade400,
-                                      border: Border.all(
-                                          color: Colors.white, width: 3),
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                    child: const Icon(
-                                      Icons.camera_alt_sharp,
-                                      color: Colors.white,
-                                      size: 25,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      CustomInputField(
-                          labelText: 'Name',
-                          hintText: 'Your name',
-                          isDense: true,
-                          validator: (textValue) {
-                            if (textValue == null || textValue.isEmpty) {
-                              return 'Name field is required!';
-                            }
-                            if (textValue.length < 5) {
-                              return "Enter valid Name";
-                            }
-                            return null;
-                          }),
                       const SizedBox(
                         height: 16,
                       ),
                       CustomInputField(
                           labelText: 'Email',
-                          hintText: 'Your email id',
+                          hintText: 'Enter email address',
+                          textEditingController: emailController,
                           isDense: true,
                           validator: (textValue) {
                             if (textValue == null || textValue.isEmpty) {
@@ -126,21 +107,27 @@ class _SignupPageState extends State<SignupPage> {
                         height: 16,
                       ),
                       CustomInputField(
-                          labelText: 'Contact no.',
-                          hintText: 'Your contact number',
-                          isDense: true,
-                          validator: (textValue) {
-                            if (textValue == null || textValue.isEmpty) {
-                              return 'Contact number is required!';
-                            }
-                            return null;
-                          }),
+                        labelText: 'Password',
+                        hintText: 'Enter password',
+                        textEditingController: passwordController,
+                        textInputAction: TextInputAction.done,
+                        isDense: true,
+                        obscureText: true,
+                        validator: (textValue) {
+                          if (textValue == null || textValue.isEmpty) {
+                            return 'Password is required!';
+                          }
+                          return null;
+                        },
+                        suffixIcon: true,
+                      ),
                       const SizedBox(
                         height: 16,
                       ),
                       CustomInputField(
-                        labelText: 'Password',
-                        hintText: 'Your password',
+                        labelText: 'Confirm password',
+                        hintText: 'Enter confirm password',
+                        textEditingController: cPasswordController,
                         textInputAction: TextInputAction.done,
                         isDense: true,
                         obscureText: true,
@@ -157,7 +144,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       CustomFormButton(
                         innerText: 'Signup',
-                        onPressed: _handleSignupUser,
+                        onPressed: createAccount,
                       ),
                       const SizedBox(
                         height: 18,
@@ -170,9 +157,7 @@ class _SignupPageState extends State<SignupPage> {
                             const Text(
                               'Already have an account ? ',
                               style: TextStyle(
-                                  fontSize: 13,
-                                  color: Color(0xff939393),
-                                  fontWeight: FontWeight.bold),
+                                  fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             GestureDetector(
                               onTap: () => {
@@ -185,8 +170,8 @@ class _SignupPageState extends State<SignupPage> {
                               child: const Text(
                                 'Log-in',
                                 style: TextStyle(
-                                    fontSize: 15,
-                                    color: Color(0xff748288),
+                                    fontSize: 16,
+                                    color: Color(0xff26E698),
                                     fontWeight: FontWeight.bold),
                               ),
                             ),

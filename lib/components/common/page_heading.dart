@@ -15,7 +15,7 @@ class PageHeading extends StatelessWidget {
           style: const TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.bold,
-              fontFamily: 'NotoSerif'
+              fontFamily: 'NotoSerif',
           ),
         ),
       ),
