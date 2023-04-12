@@ -3,6 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:login_signup/components/login_page.dart';
+import 'package:login_signup/components/view/category_view.dart';
+import 'package:login_signup/components/view/explore_view.dart';
+import 'package:login_signup/components/view/home_view.dart';
+import 'package:login_signup/components/view/profile_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   final ScrollController _homeController = ScrollController();
+  final tabs = [HomeView(), ExploreView(), CategoryView(),ProfileView()];
 
   Widget _listViewBody() {
     return ListView.separated(
@@ -44,8 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.blue),
+        systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.blue),
         actions: [
           IconButton(
             onPressed: () {
@@ -55,43 +59,93 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: const Center(child: Text("Home Page")),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+      body: tabs[_selectedIndex],
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: SizedBox(
+        width: 68,
+        height: 68,
+        child: FloatingActionButton(
+          onPressed: () {
+            // Add your onPressed code here!
+          },
+          backgroundColor: Colors.green,
+          child: const SizedBox(
+            height: 32,
+            width: 32,
+            child: ImageIcon(
+              AssetImage("assets/icons/shopping_bucket.png"),
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.open_in_new_rounded),
-            label: 'Open Dialog',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: (int index) {
-          switch (index) {
-            case 0:
-              // only scroll to top when current index is selected.
-              if (_selectedIndex == index) {
-                _homeController.animateTo(
-                  0.0,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeOut,
-                );
-              }
-              break;
-            case 1:
-              showModal(context);
-              break;
-          }
-          setState(
-            () {
-              _selectedIndex = index;
-            },
-          );
-        },
+        ),
       ),
+      bottomNavigationBar: SizedBox(
+        height: 100,
+        child: BottomNavigationBar(
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          unselectedItemColor: Colors.grey,
+          selectedItemColor: Colors.green,
+            type: BottomNavigationBarType.fixed,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 30,
+                width: 30,
+                child: ImageIcon(
+                  AssetImage("assets/icons/ic_home_3x.png"),
+                ),
+              ),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 28,
+                width: 28,
+                child: ImageIcon(
+                  AssetImage("assets/icons/discover.png"),
+                ),
+              ),
+              label: 'News',
+            ),
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 24,
+                width: 24,
+                child: ImageIcon(
+                  AssetImage("assets/icons/category.png"),
+                ),
+              ),
+              label: 'Alerts',
+            ),
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 28,
+                width: 28,
+                child: ImageIcon(
+                  AssetImage("assets/icons/profile.png"),
+                ),
+              ),
+              label: 'Account',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: (int index) {
+            switch (index) {
+              case 0:
+                break;
+              case 1:
+                break;
+            }
+            setState(
+                  () {
+                _selectedIndex = index;
+              },
+            );
+          },
+        ),
+      ),
+
       drawer: Drawer(
         child: ListView(
           children: [
