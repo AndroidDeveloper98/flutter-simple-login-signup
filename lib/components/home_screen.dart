@@ -47,7 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Color(0xffFDFDFD),
+      /*appBar: AppBar(
         title: const Text('Dashboard'),
         systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.blue),
         actions: [
@@ -58,13 +60,13 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.exit_to_app),
           ),
         ],
-      ),
+      ),*/
       body: tabs[_selectedIndex],
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: SizedBox(
-        width: 68,
-        height: 68,
+        width: 64,
+        height: 64,
         child: FloatingActionButton(
           onPressed: () {
             // Add your onPressed code here!
