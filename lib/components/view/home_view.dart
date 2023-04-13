@@ -38,8 +38,6 @@ class _HomeViewState extends State<HomeView> {
           context, CupertinoPageRoute(builder: (context) => const LoginPage()));
     }
 
-
-
     final controller = PageController(keepPage: true);
     return Scaffold(
       backgroundColor: const Color(0xffF8F8F8),
@@ -191,14 +189,14 @@ class _HomeViewState extends State<HomeView> {
             ),
             Container(
               color: Colors.white,
-              margin: const EdgeInsets.only(top: 12.0),
+              margin: const EdgeInsets.only(top: 5.0),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  SizedBox(height: 12),
+                  const SizedBox(height: 18),
                   Container(
                     height: 32.0,
-                    margin: EdgeInsets.symmetric(horizontal: 12),
+                    margin: const EdgeInsets.symmetric(horizontal: 12),
                     color: Colors.white,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -262,7 +260,7 @@ class _HomeViewState extends State<HomeView> {
                                         ),
                                       ),
                                       const SizedBox(width: 6),
-                                       Text(
+                                      Text(
                                         sortFilter[index].toString(),
                                         style: TextStyle(
                                             color: Colors.white,
@@ -277,7 +275,114 @@ class _HomeViewState extends State<HomeView> {
                       itemCount: sortFilter.length,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 18),
+                  const Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 24.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Best Seller",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  color: Color(0xff1B1B1B),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 24.0),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Text("See All",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  color: Color(0xff20CC87),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    child: GridView.builder(
+                      itemCount: sortFilter.length,
+                      scrollDirection: Axis.vertical,
+                      padding: EdgeInsets.only(bottom: 32),
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, mainAxisExtent: 214),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Card(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 8),
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16)),
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                'assets/images/tomato.png',
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16.0, right: 16),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text("Chinese Fresh Cabbage",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          color: Color(0xff1B1B1B),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16.0, top: 6.0),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text("Organic",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          color: Color(0xffA1A1A1),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.normal)),
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16.0, top: 6.0),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Row(
+                                    children: [
+                                      Text("\u0024 5.65",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Color(0xff000000),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold)),
+                                      Text("/kg",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Color(0xffA1A1A1),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),

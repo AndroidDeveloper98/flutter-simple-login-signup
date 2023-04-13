@@ -46,8 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      //resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xffFDFDFD),
       /*appBar: AppBar(
         title: const Text('Dashboard'),
@@ -64,7 +65,27 @@ class _HomeScreenState extends State<HomeScreen> {
       body: tabs[_selectedIndex],
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: SizedBox(
+      floatingActionButton: Visibility(
+          visible: !keyboardIsOpen,
+          child: SizedBox(
+            width: 64,
+            height: 64,
+            child: FloatingActionButton(
+              onPressed: () {
+                // Add your onPressed code here!
+              },
+              backgroundColor:Color(0xff26D38D),
+              child: const SizedBox(
+                height: 32,
+                width: 32,
+                child: ImageIcon(
+                  AssetImage("assets/icons/shopping_bucket.png"),
+                ),
+              ),
+            ),
+          ),// your FloatingActionButton
+      ),
+      /*floatingActionButton: SizedBox(
         width: 64,
         height: 64,
         child: FloatingActionButton(
@@ -80,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-      ),
+      ),*/
       bottomNavigationBar: SizedBox(
         height: 100,
         child: BottomNavigationBar(
