@@ -41,7 +41,9 @@ class _CustomSearchFieldState extends State<CustomSearchField> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           child: TextFormField(
-          style:  TextStyle(color: Color(0xff000000)),
+            enabled: false,
+            readOnly: true,
+            style: TextStyle(color: Color(0xff000000)),
             textInputAction: (widget.textInputAction != null)
                 ? widget.textInputAction
                 : TextInputAction.next,
@@ -52,10 +54,13 @@ class _CustomSearchFieldState extends State<CustomSearchField> {
               hintStyle: TextStyle(color: Color(0xffA1A1A1)),
               border: InputBorder.none,
               prefixIcon: widget.suffixIcon
-                  ? const ImageIcon(AssetImage("assets/icons/ic_search.png"),color: Colors.grey,)
+                  ? const ImageIcon(
+                      AssetImage("assets/icons/ic_search.png"),
+                      color: Colors.grey,
+                    )
                   : null,
               prefixIconConstraints: (widget.isDense != null)
-                  ? const BoxConstraints(maxHeight: 33,minWidth: 38)
+                  ? const BoxConstraints(maxHeight: 33, minWidth: 38)
                   : null,
             ),
             //autovalidateMode: AutovalidateMode.onUserInteraction,

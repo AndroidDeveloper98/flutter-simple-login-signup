@@ -38,82 +38,120 @@ class _HomeViewState extends State<HomeView> {
           context, CupertinoPageRoute(builder: (context) => const LoginPage()));
     }
 
+    void logoutDialog(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          content: const Text('Are you sure to logout ?'),
+          actions: <TextButton>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Close'),
+            ),
+            TextButton(
+              onPressed: () {
+                logOut();
+              },
+              child: const Text('Logout'),
+            )
+          ],
+        ),
+      );
+    }
+
     final controller = PageController(keepPage: true);
     return Scaffold(
       backgroundColor: const Color(0xffF8F8F8),
+      appBar: AppBar(
+        toolbarHeight: 86,
+        elevation: 0,// Set this height
+        flexibleSpace: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 24.0, right: 18.0),
+            child: Column(
+              children: [
+                const SizedBox(height: 56),
+                Row(
+                  children: [
+                    const SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: CircleAvatar(
+                        backgroundImage: AssetImage(
+                            'assets/images/casey_placeholder.png'),
+                      ),
+                    ),
+                    const Flexible(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                              padding:
+                              EdgeInsets.only(left: 16.0, right: 16.0),
+                              child: Row(
+                                children: [
+                                  Text("Hi",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold)),
+                                  Text(", Casey",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal)),
+                                ],
+                              )),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: 16.0, right: 8.0, top: 8.0),
+                            child: Text("What would you buy today ?",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.normal)),
+                          )
+                        ],
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        logoutDialog(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(), //<-- SEE HERE
+                          padding: const EdgeInsets.all(14),
+                          backgroundColor: const Color(0xff26D38D)),
+                      child: const SizedBox(
+                          height: 20,
+                          child: ImageIcon(AssetImage(
+                              "assets/icons/shopping_cart.png"))),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+              ],
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             Container(
               color: Colors.white,
               child: Padding(
-                padding:
-                    const EdgeInsets.only(left: 24.0, right: 18.0, bottom: 24),
+                padding: const EdgeInsets.only(left: 24.0, right: 18.0, bottom: 24),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(height: 56),
-                    Row(
-                      children: [
-                        const SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: CircleAvatar(
-                            backgroundImage: AssetImage(
-                                'assets/images/casey_placeholder.png'),
-                          ),
-                        ),
-                        const Flexible(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 16.0, right: 16.0),
-                                  child: Row(
-                                    children: [
-                                      Text("Hi",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold)),
-                                      Text(", Casey",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal)),
-                                    ],
-                                  )),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: 16.0, right: 8.0, top: 8.0),
-                                child: Text("What would you buy today ?",
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.normal)),
-                              )
-                            ],
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            logOut();
-                          },
-                          style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(), //<-- SEE HERE
-                              padding: const EdgeInsets.all(14),
-                              backgroundColor: const Color(0xff26D38D)),
-                          child: const SizedBox(
-                              height: 20,
-                              child: ImageIcon(AssetImage(
-                                  "assets/icons/shopping_cart.png"))),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 12),
                     CustomSearchField(
                       hintText: 'Search by item name',
                       textInputAction: TextInputAction.done,
@@ -317,7 +355,7 @@ class _HomeViewState extends State<HomeView> {
                       shrinkWrap: true,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, mainAxisExtent: 214),
+                              crossAxisCount: 2, mainAxisExtent: 224),
                       itemBuilder: (BuildContext context, int index) {
                         return Card(
                           margin: const EdgeInsets.symmetric(
@@ -355,24 +393,56 @@ class _HomeViewState extends State<HomeView> {
                                           fontWeight: FontWeight.normal)),
                                 ),
                               ),
-                              const Padding(
+                               Padding(
                                 padding: EdgeInsets.only(left: 16.0, top: 6.0),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("\u0024 5.65",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color: Color(0xff000000),
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold)),
-                                      Text("/kg",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color: Color(0xffA1A1A1),
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal)),
+                                      Row(
+                                        children: [
+                                          Text("\u0024 5.65",
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  color: Color(0xff000000),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold)),
+                                          Text("/kg",
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  color: Color(0xffA1A1A1),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.normal)),
+                                        ],
+                                      ),
+                                      Container(
+                                        height: 32,
+                                        width: 32,
+                                        margin: EdgeInsets.only(right: 12),
+                                        decoration: BoxDecoration(
+                                          gradient: const LinearGradient(
+                                              colors: [
+                                                Color(0xFF26E698),
+                                                Color(0xFF16C07B),
+                                              ],
+                                              begin: FractionalOffset(0.0, 0.0),
+                                              end: FractionalOffset(1.0, 0.0),
+                                              stops: [0.0, 1.0],
+                                              tileMode: TileMode.clamp),
+                                          border:
+                                          Border.all(color: Colors.white70),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(24)),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Image.asset(
+                                            'assets/icons/ic_add.png',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -391,4 +461,7 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
+
+
+  
 }
