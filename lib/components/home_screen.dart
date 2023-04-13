@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             // Add your onPressed code here!
           },
-          backgroundColor: Colors.green,
+          backgroundColor:Color(0xff26D38D),
           child: const SizedBox(
             height: 32,
             width: 32,
@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
           showSelectedLabels: false,
           showUnselectedLabels: false,
           unselectedItemColor: Colors.grey,
-          selectedItemColor: Colors.green,
+          selectedItemColor: Color(0xff26D38D),
             type: BottomNavigationBarType.fixed,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(

@@ -197,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                                     'Sign-up',
                                     style: TextStyle(
                                         fontSize: 16,
-                                        color: Color(0xff16C07B),
+                                        color: Color(0xff26D38D),
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),

@@ -35,8 +35,8 @@ class _CustomSearchFieldState extends State<CustomSearchField> {
       width: size.width * 0.9,
       child: Container(
         decoration: const BoxDecoration(
-          color: Color(0xffe8e8e8),
-          borderRadius: BorderRadius.all(Radius.circular(24)),
+          color: Color(0xffF8F8F8),
+          borderRadius: BorderRadius.all(Radius.circular(40)),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),

@@ -13,11 +13,11 @@ class CustomFormButton extends StatelessWidget {
       width: size.width * 0.85,
       margin: const EdgeInsets.symmetric(horizontal: 0,vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xff16C07B),
+        color: const Color(0xff26D38D),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xff16C07B).withOpacity(0.3),
+            color: const Color(0xff26D38D).withOpacity(0.3),
             spreadRadius: 2,
             blurRadius: 8,
             offset: const Offset(0, 8), // changes position of shadow
