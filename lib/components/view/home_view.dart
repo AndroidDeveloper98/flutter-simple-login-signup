@@ -14,6 +14,21 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  String? selectedValue;
+  List<String> sortFilter = [
+    'Vegetable',
+    'Fruit',
+    'Dairy',
+    'Dry Fruits',
+    'Food Oil'
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    selectedValue = sortFilter.first;
+  }
+
   @override
   Widget build(BuildContext context) {
     void logOut() async {
@@ -22,6 +37,8 @@ class _HomeViewState extends State<HomeView> {
       Navigator.pushReplacement(
           context, CupertinoPageRoute(builder: (context) => const LoginPage()));
     }
+
+
 
     final controller = PageController(keepPage: true);
     return Scaffold(
@@ -181,271 +198,83 @@ class _HomeViewState extends State<HomeView> {
                   SizedBox(height: 12),
                   Container(
                     height: 32.0,
+                    margin: EdgeInsets.symmetric(horizontal: 12),
                     color: Colors.white,
-                    child: ListView(
-                      // This next line does the trick.
+                    child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        Container(
-                          height: 32,
-                          margin: const EdgeInsets.only(left: 12, right: 12),
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xFF26E698),
-                                    Color(0xFF16C07B),
-                                  ],
-                                  begin: FractionalOffset(0.0, 0.0),
-                                  end: FractionalOffset(1.0, 0.0),
-                                  stops: [0.0, 1.0],
-                                  tileMode: TileMode.clamp),
-                            border: Border.all(color: Colors.white70),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(24)),
-                          ),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 8.0, right: 12),
-                            child: Align(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border:
-                                            Border.all(color: Colors.white70),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(24)),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Image.asset(
-                                          'assets/images/carrat_image.png',
-                                          fit: BoxFit.cover,
+                      itemBuilder: (ctx, index) {
+                        return GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            selectedValue = sortFilter[index];
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: 32,
+                            margin: const EdgeInsets.symmetric(horizontal: 6),
+                            decoration: BoxDecoration(
+                              gradient: selectedValue == sortFilter[index]
+                                  ? const LinearGradient(
+                                      colors: [
+                                        Color(0xFF26E698),
+                                        Color(0xFF16C07B),
+                                      ],
+                                      begin: FractionalOffset(0.0, 0.0),
+                                      end: FractionalOffset(1.0, 0.0),
+                                      stops: [0.0, 1.0],
+                                      tileMode: TileMode.clamp)
+                                  : const LinearGradient(
+                                      colors: [
+                                        Color(0xFFC9C9C9),
+                                        Color(0xFFC9C9C9),
+                                      ],
+                                      begin: FractionalOffset(0.0, 0.0),
+                                      end: FractionalOffset(1.0, 0.0),
+                                      stops: [0.0, 1.0],
+                                      tileMode: TileMode.clamp),
+                              border: Border.all(color: Colors.white70),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(24)),
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 8.0, right: 12),
+                              child: Align(
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        height: 20,
+                                        width: 20,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border:
+                                              Border.all(color: Colors.white70),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(24)),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Image.asset(
+                                            'assets/images/carrat_image.png',
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 6),
-                                    const Text(
-                                      "Vegetable",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 10.0),
-                                    ),
-                                  ],
-                                )),
-                          ),
-                        ),
-                        Container(
-                          height: 32,
-                          margin: const EdgeInsets.only(right: 12),
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xFF26E698),
-                                    Color(0xFF16C07B),
-                                  ],
-                                  begin: FractionalOffset(0.0, 0.0),
-                                  end: FractionalOffset(1.0, 0.0),
-                                  stops: [0.0, 1.0],
-                                  tileMode: TileMode.clamp),
-                            border: Border.all(color: Colors.white70),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(24)),
-                          ),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 8.0, right: 12),
-                            child: Align(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border:
-                                            Border.all(color: Colors.white70),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(24)),
+                                      const SizedBox(width: 6),
+                                       Text(
+                                        sortFilter[index].toString(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 10.0),
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Image.asset(
-                                          'assets/images/carrat_image.png',
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 6),
-                                    const Text(
-                                      "Vegetable",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 10.0),
-                                    ),
-                                  ],
-                                )),
+                                    ],
+                                  )),
+                            ),
                           ),
-                        ),
-                        Container(
-                          height: 32,
-                          margin: const EdgeInsets.only(right: 12),
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xFF26E698),
-                                    Color(0xFF16C07B),
-                                  ],
-                                  begin: FractionalOffset(0.0, 0.0),
-                                  end: FractionalOffset(1.0, 0.0),
-                                  stops: [0.0, 1.0],
-                                  tileMode: TileMode.clamp),
-                            border: Border.all(color: Colors.white70),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(24)),
-                          ),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 8.0, right: 12),
-                            child: Align(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border:
-                                            Border.all(color: Colors.white70),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(24)),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Image.asset(
-                                          'assets/images/carrat_image.png',
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 6),
-                                    const Text(
-                                      "Vegetable",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 10.0),
-                                    ),
-                                  ],
-                                )),
-                          ),
-                        ),
-                        Container(
-                          height: 32,
-                          margin: const EdgeInsets.only(right: 12),
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xFF26E698),
-                                    Color(0xFF16C07B),
-                                  ],
-                                  begin: FractionalOffset(0.0, 0.0),
-                                  end: FractionalOffset(1.0, 0.0),
-                                  stops: [0.0, 1.0],
-                                  tileMode: TileMode.clamp),
-                            border: Border.all(color: Colors.white70),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(24)),
-                          ),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 8.0, right: 12),
-                            child: Align(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border:
-                                            Border.all(color: Colors.white70),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(24)),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Image.asset(
-                                          'assets/images/carrat_image.png',
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 6),
-                                    const Text(
-                                      "Vegetable",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 10.0),
-                                    ),
-                                  ],
-                                )),
-                          ),
-                        ),
-                        Container(
-                          height: 32,
-                          margin: const EdgeInsets.only(right: 12),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white70),
-                            borderRadius: const BorderRadius.all(Radius.circular(24)),
-                              gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xFF26E698),
-                                    Color(0xFF16C07B),
-                                  ],
-                                  begin: FractionalOffset(0.0, 0.0),
-                                  end: FractionalOffset(1.0, 0.0),
-                                  stops: [0.0, 1.0],
-                                  tileMode: TileMode.clamp)
-                          ),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 8.0, right: 12),
-                            child: Align(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border:
-                                            Border.all(color: Colors.white70),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(24)),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Image.asset(
-                                          'assets/images/carrat_image.png',
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 6),
-                                    const Text(
-                                      "Vegetable",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 10.0),
-                                    ),
-                                  ],
-                                )),
-                          ),
-                        ),
-                      ],
+                        );
+                      },
+                      itemCount: sortFilter.length,
                     ),
                   ),
                   const SizedBox(height: 12),
