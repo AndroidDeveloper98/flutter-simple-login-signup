@@ -9,7 +9,7 @@ import 'package:login_signup/components/common/custom_input_field.dart';
 import 'package:login_signup/components/common/page_heading.dart';
 import 'package:login_signup/components/login_page.dart';
 
-import 'home_screen.dart';
+import 'screen/home_screen.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);

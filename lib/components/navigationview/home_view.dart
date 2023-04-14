@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup/components/common/custom_search_field.dart';
+import 'package:login_signup/components/screen/search_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../login_page.dart';
@@ -15,7 +16,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   String? selectedValue;
-  List<String> sortFilter = [
+  List<String> groceryCategoryList = [
     'Vegetable',
     'Fruit',
     'Dairy',
@@ -23,10 +24,19 @@ class _HomeViewState extends State<HomeView> {
     'Food Oil'
   ];
 
+  List<String> vegatablesList = [
+    'assets/images/cabbage.png',
+    'assets/images/sweet_potato.png',
+    'assets/images/green_beans.png',
+    'assets/images/fresh_broccoli.png',
+    'assets/images/potato.png',
+    'assets/images/tomato.png',
+  ];
+
   @override
   void initState() {
     super.initState();
-    selectedValue = sortFilter.first;
+    selectedValue = groceryCategoryList.first;
   }
 
   @override
@@ -66,7 +76,7 @@ class _HomeViewState extends State<HomeView> {
       backgroundColor: const Color(0xffF8F8F8),
       appBar: AppBar(
         toolbarHeight: 86,
-        elevation: 0,// Set this height
+        elevation: 0, // Set this height
         flexibleSpace: Container(
           color: Colors.white,
           child: Padding(
@@ -80,8 +90,8 @@ class _HomeViewState extends State<HomeView> {
                       height: 50,
                       width: 50,
                       child: CircleAvatar(
-                        backgroundImage: AssetImage(
-                            'assets/images/casey_placeholder.png'),
+                        backgroundImage:
+                            AssetImage('assets/images/casey_placeholder.png'),
                       ),
                     ),
                     const Flexible(
@@ -90,8 +100,7 @@ class _HomeViewState extends State<HomeView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                              padding:
-                              EdgeInsets.only(left: 16.0, right: 16.0),
+                              padding: EdgeInsets.only(left: 16.0, right: 16.0),
                               child: Row(
                                 children: [
                                   Text("Hi",
@@ -119,18 +128,20 @@ class _HomeViewState extends State<HomeView> {
                         ],
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        logoutDialog(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(), //<-- SEE HERE
-                          padding: const EdgeInsets.all(14),
-                          backgroundColor: const Color(0xff26D38D)),
-                      child: const SizedBox(
-                          height: 20,
-                          child: ImageIcon(AssetImage(
-                              "assets/icons/shopping_cart.png"))),
+                    Container(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          logoutDialog(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            shape: const CircleBorder(), //<-- SEE HERE
+                            padding: const EdgeInsets.all(14),
+                            backgroundColor: const Color(0xff26D38D)),
+                        child: const SizedBox(
+                            height: 20,
+                            child: ImageIcon(
+                                AssetImage("assets/icons/shopping_cart.png"))),
+                      ),
                     ),
                   ],
                 ),
@@ -147,23 +158,32 @@ class _HomeViewState extends State<HomeView> {
             Container(
               color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.only(left: 24.0, right: 18.0, bottom: 24),
+                padding:
+                    const EdgeInsets.only(left: 24.0, right: 18.0, bottom: 24),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 12),
-                    CustomSearchField(
-                      hintText: 'Search by item name',
-                      textInputAction: TextInputAction.done,
-                      isDense: true,
-                      obscureText: true,
-                      validator: (textValue) {
-                        if (textValue == null || textValue.isEmpty) {
-                          return 'Password is required!';
-                        }
-                        return null;
+                    GestureDetector(
+                      onTap: () => {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => const SearchScreen()))
                       },
-                      suffixIcon: true,
+                      child: CustomSearchField(
+                        hintText: 'Search by item name',
+                        textInputAction: TextInputAction.done,
+                        isDense: true,
+                        obscureText: true,
+                        validator: (textValue) {
+                          if (textValue == null || textValue.isEmpty) {
+                            return 'Password is required!';
+                          }
+                          return null;
+                        },
+                        suffixIcon: true,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     SizedBox(
@@ -242,14 +262,14 @@ class _HomeViewState extends State<HomeView> {
                         return GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
-                            selectedValue = sortFilter[index];
+                            selectedValue = groceryCategoryList[index];
                             setState(() {});
                           },
                           child: Container(
                             height: 32,
                             margin: const EdgeInsets.symmetric(horizontal: 6),
                             decoration: BoxDecoration(
-                              gradient: selectedValue == sortFilter[index]
+                              gradient: selectedValue == groceryCategoryList[index]
                                   ? const LinearGradient(
                                       colors: [
                                         Color(0xFF26E698),
@@ -268,7 +288,6 @@ class _HomeViewState extends State<HomeView> {
                                       end: FractionalOffset(1.0, 0.0),
                                       stops: [0.0, 1.0],
                                       tileMode: TileMode.clamp),
-                              border: Border.all(color: Colors.white70),
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(24)),
                             ),
@@ -299,8 +318,8 @@ class _HomeViewState extends State<HomeView> {
                                       ),
                                       const SizedBox(width: 6),
                                       Text(
-                                        sortFilter[index].toString(),
-                                        style: TextStyle(
+                                        groceryCategoryList[index].toString(),
+                                        style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 10.0),
                                       ),
@@ -310,7 +329,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                         );
                       },
-                      itemCount: sortFilter.length,
+                      itemCount: groceryCategoryList.length,
                     ),
                   ),
                   const SizedBox(height: 18),
@@ -346,16 +365,16 @@ class _HomeViewState extends State<HomeView> {
                   ),
                   const SizedBox(height: 18),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
                     child: GridView.builder(
-                      itemCount: sortFilter.length,
+                      itemCount: vegatablesList.length,
                       scrollDirection: Axis.vertical,
-                      padding: EdgeInsets.only(bottom: 32),
-                      physics: NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.only(bottom: 32),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, mainAxisExtent: 224),
+                              crossAxisCount: 2, mainAxisExtent: 222),
                       itemBuilder: (BuildContext context, int index) {
                         return Card(
                           margin: const EdgeInsets.symmetric(
@@ -365,14 +384,64 @@ class _HomeViewState extends State<HomeView> {
                               borderRadius: BorderRadius.circular(16)),
                           child: Column(
                             children: [
-                              Image.asset(
-                                'assets/images/tomato.png',
+                              Stack(
+                                children: [
+                                  SizedBox(
+                                    height: 120,
+                                    child: Container(
+                                      alignment: Alignment.bottomCenter,
+                                      margin: const EdgeInsets.symmetric(horizontal: 12),
+                                      color: Colors.white,
+                                      child: Image.asset(
+                                        vegatablesList[index],fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: Container(
+                                      height: 32,
+                                      width: 32,
+                                      margin: const EdgeInsets.only(right: 12,top: 12),
+                                      decoration: const BoxDecoration(
+                                        gradient: LinearGradient(
+                                            colors: [
+                                              Color(0xFFF8F8F8),
+                                              Color(0xFFF8F8F8),
+                                            ],
+                                            begin: FractionalOffset(0.0, 0.0),
+                                            end: FractionalOffset(1.0, 0.0),
+                                            stops: [0.0, 1.0],
+                                            tileMode: TileMode.clamp),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(24)),
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () => {},
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 4,
+                                                bottom: 4,
+                                                left: 4,
+                                                right: 4),
+                                            child: Image.asset(
+                                              'assets/icons/ic_heart.png',
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                               const Padding(
                                 padding: EdgeInsets.only(left: 16.0, right: 16),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text("Chinese Fresh Cabbage",
+                                  child: Text("Fresh Cabbage",
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
@@ -393,14 +462,16 @@ class _HomeViewState extends State<HomeView> {
                                           fontWeight: FontWeight.normal)),
                                 ),
                               ),
-                               Padding(
-                                padding: EdgeInsets.only(left: 16.0, top: 6.0),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 16.0, top: 6.0),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
+                                      const Row(
                                         children: [
                                           Text("\u0024 5.65",
                                               textAlign: TextAlign.left,
@@ -413,15 +484,17 @@ class _HomeViewState extends State<HomeView> {
                                               style: TextStyle(
                                                   color: Color(0xffA1A1A1),
                                                   fontSize: 14,
-                                                  fontWeight: FontWeight.normal)),
+                                                  fontWeight:
+                                                      FontWeight.normal)),
                                         ],
                                       ),
                                       Container(
                                         height: 32,
                                         width: 32,
-                                        margin: EdgeInsets.only(right: 12),
-                                        decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
+                                        margin:
+                                        const EdgeInsets.only(right: 12),
+                                        decoration: const BoxDecoration(
+                                          gradient: LinearGradient(
                                               colors: [
                                                 Color(0xFF26E698),
                                                 Color(0xFF16C07B),
@@ -430,16 +503,21 @@ class _HomeViewState extends State<HomeView> {
                                               end: FractionalOffset(1.0, 0.0),
                                               stops: [0.0, 1.0],
                                               tileMode: TileMode.clamp),
-                                          border:
-                                          Border.all(color: Colors.white70),
-                                          borderRadius: const BorderRadius.all(
+                                          borderRadius: BorderRadius.all(
                                               Radius.circular(24)),
                                         ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(2.0),
-                                          child: Image.asset(
-                                            'assets/icons/ic_add.png',
-                                            fit: BoxFit.cover,
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 2,
+                                                bottom: 3.5,
+                                                left: 2,
+                                                right: 2),
+                                            child: Image.asset(
+                                              'assets/icons/ic_add.png',
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -461,7 +539,4 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
-
-
-  
 }

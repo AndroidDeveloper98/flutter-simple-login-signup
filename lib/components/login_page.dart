@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:login_signup/components/common/custom_form_button.dart';
 import 'package:login_signup/components/common/custom_input_field.dart';
 import 'package:login_signup/components/common/page_heading.dart';
-import 'package:login_signup/components/home_screen.dart';
+import 'package:login_signup/components/screen/home_screen.dart';
 import 'package:login_signup/components/signup_page.dart';
 
 class LoginPage extends StatefulWidget {

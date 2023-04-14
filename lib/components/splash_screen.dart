@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup/components/login_page.dart';
 
-import 'home_screen.dart';
+import 'screen/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue,
-      body: Center(
+      body:  Center(
         child: Image.asset(
           'assets/images/flutter_icon.png',
           width: 200.0,
